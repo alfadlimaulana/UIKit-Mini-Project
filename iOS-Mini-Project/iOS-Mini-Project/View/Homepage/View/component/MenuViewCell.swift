@@ -8,11 +8,12 @@
 import UIKit
 
 class MenuViewCell: UICollectionViewCell {
+    var meal: Meal!
+    
     let imageView = UIImageView()
     let titleLabel = UILabel()
-    let categoryLabel = UILabel()
     let cardBody = UIView()
-    let badgeView = UIView()
+    let badgeView = BadgeView()
 
     override init(frame: CGRect) {
        super.init(frame: frame)
@@ -27,9 +28,11 @@ class MenuViewCell: UICollectionViewCell {
     private func setupViews() {
        // Setup imageView
         contentView.backgroundColor = .white
+        contentView.layer.cornerRadius = 8
         
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 8
+        imageView.image = UIImage(systemName: "image")
         imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -39,23 +42,12 @@ class MenuViewCell: UICollectionViewCell {
         titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
         titleLabel.textColor = .black
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        // Setup subtitleLabel
-        categoryLabel.font = UIFont.systemFont(ofSize: 10)
-        categoryLabel.textColor = .white
-        categoryLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        badgeView.backgroundColor = .systemBlue
-        badgeView.layer.cornerRadius = 12
-        badgeView.layer.masksToBounds = true
-        badgeView.translatesAutoresizingMaskIntoConstraints = false
         
         // Add subviews to the contentView
         contentView.addSubview(imageView)
         contentView.addSubview(cardBody)
         cardBody.addSubview(titleLabel)
         cardBody.addSubview(badgeView)
-        badgeView.addSubview(categoryLabel)
         
 
         // Layout subviews
@@ -73,20 +65,35 @@ class MenuViewCell: UICollectionViewCell {
            badgeView.leadingAnchor.constraint(equalTo: cardBody.leadingAnchor),
            badgeView.bottomAnchor.constraint(equalTo: cardBody.bottomAnchor),
            
-           categoryLabel.topAnchor.constraint(equalTo: badgeView.topAnchor, constant: 6),
-           categoryLabel.bottomAnchor.constraint(equalTo: badgeView.bottomAnchor, constant: -6),
-           categoryLabel.leadingAnchor.constraint(equalTo: badgeView.leadingAnchor, constant: 12),
-           categoryLabel.trailingAnchor.constraint(equalTo: badgeView.trailingAnchor, constant: -12),
-           
-           titleLabel.bottomAnchor.constraint(equalTo: badgeView.topAnchor, constant: -4),
+           titleLabel.bottomAnchor.constraint(equalTo: badgeView.topAnchor, constant: -6),
            titleLabel.leadingAnchor.constraint(equalTo: cardBody.leadingAnchor),
            titleLabel.trailingAnchor.constraint(equalTo: cardBody.trailingAnchor)
         ])
     }
 
-    func configure(image: UIImage?, title: String, subtitle: String) {
-        imageView.image = image
-        titleLabel.text = title
-        categoryLabel.text = subtitle
+    func configure(meal: Meal) {
+        self.meal = meal
+        
+        if let url = URL(string: meal.strMealThumb) {
+            let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+                guard let self = self else { return }
+                
+                if let error = error {
+                    print("Error fetching image: \(error.localizedDescription)")
+                    return
+                }
+                
+                if let data = data, let image = UIImage(data: data) {
+                    // Perbarui UI di thread utama
+                    DispatchQueue.main.async {
+                        self.imageView.image = image
+                    }
+                }
+            }
+            task.resume()
+        }
+        
+        titleLabel.text = meal.strMeal
+        badgeView.configure(with: meal.strArea)
     }
 }
