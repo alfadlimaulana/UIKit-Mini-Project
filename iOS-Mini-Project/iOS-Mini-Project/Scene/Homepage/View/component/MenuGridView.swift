@@ -52,6 +52,11 @@ class MenuGridView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
         ])
     }
     
+    func reloadData(meals: [Meal]) {
+        self.meals = meals
+        collectionView.reloadData()
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
             didSelectItem?(indexPath)
         }
@@ -85,6 +90,7 @@ class MenuGridView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
     // MARK: - Public Method
     
     func configure(meals: [Meal], didSelectItem: @escaping (IndexPath) -> Void) {
+        print(meals)
         self.meals = meals
         self.didSelectItem = didSelectItem
         collectionView.reloadData()

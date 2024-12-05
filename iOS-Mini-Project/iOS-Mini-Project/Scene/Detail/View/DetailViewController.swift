@@ -8,10 +8,10 @@
 import UIKit
 
 class DetailViewController: UIViewController {
-    private let meal: Meal
+    let vm: DetailViewControllerViewModel
     
-    init(meal: Meal) {
-        self.meal = meal
+    init(vm: DetailViewControllerViewModel) {
+        self.vm = vm
         super.init(nibName: nil, bundle: nil)
     }
     

@@ -13,7 +13,16 @@ class HomepageViewController: UIViewController {
     let filterView = FilterView()
     let gridView = MenuGridView()
     
-    let meals = Meal.getMockArray()
+    let vm: HomepageViewControllerViewModel
+    
+    init(vm: HomepageViewControllerViewModel = HomepageViewControllerViewModel()) {
+        self.vm = vm
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +35,12 @@ class HomepageViewController: UIViewController {
         setupSearchInput()
         setupFilterView()
         setupGrid()
+        
+        self.vm.onMealsUpdated = { [weak self] in
+            DispatchQueue.main.async {
+                self?.gridView.reloadData(meals: self?.vm.meals ?? [])
+            }
+        }
     }
     
     func setupContainer () {
@@ -71,11 +86,12 @@ class HomepageViewController: UIViewController {
             gridView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
         ])
         
-        gridView.configure(meals: meals) { [weak self] indexPath in
+        gridView.configure(meals: vm.meals) { [weak self] indexPath in
             
             guard let self = self else { return }
-            let meal = self.meals[indexPath.row]
-            let vc = DetailViewController(meal: meal)
+            let meal = self.vm.meals[indexPath.row]
+            let vm = DetailViewControllerViewModel(meal: meal)
+            let vc = DetailViewController(vm: vm)
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
