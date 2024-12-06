@@ -8,8 +8,6 @@
 import UIKit
 
 class MenuViewCell: UICollectionViewCell {
-    var meal: Meal!
-    
     let imageView = UIImageView()
     let titleLabel = UILabel()
     let cardBody = UIView()
@@ -71,10 +69,7 @@ class MenuViewCell: UICollectionViewCell {
         ])
     }
 
-    func configure(meal: Meal) {
-        self.meal = meal
-        
-        if let url = URL(string: meal.strMealThumb) {
+    func configure(meal: Meal) {if let url = URL(string: meal.strMealThumb) {
             let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
                 guard let self = self else { return }
                 

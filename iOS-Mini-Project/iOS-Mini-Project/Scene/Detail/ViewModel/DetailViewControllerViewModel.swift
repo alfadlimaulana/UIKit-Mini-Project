@@ -8,7 +8,7 @@
 import Foundation
 
 class DetailViewControllerViewModel {
-    private let meal: Meal
+    let meal: Meal
     
     init(meal: Meal) {
         self.meal = meal

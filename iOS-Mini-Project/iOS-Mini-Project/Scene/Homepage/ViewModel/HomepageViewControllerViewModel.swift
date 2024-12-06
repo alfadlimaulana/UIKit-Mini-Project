@@ -18,11 +18,11 @@ class HomepageViewControllerViewModel {
     }
     
     init() {
-        self.fetchCoins()
+        self.fetchMeals()
     }
     
-    public func fetchCoins() {
-        let endpoint = Endpoint.fetchMeals()
+    public func fetchMeals(query: String? = "") {
+        let endpoint = Endpoint.fetchMeals(query: query)
         MealService.fetchMeals(with: endpoint) { [weak self] result in
             switch result {
             case .success(let meals):

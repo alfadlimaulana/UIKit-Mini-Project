@@ -9,7 +9,7 @@ import Foundation
 
 enum Endpoint {
     
-    case fetchMeals(url: String = "/api/json/v1/1/search.php")
+    case fetchMeals(url: String = "/api/json/v1/1/search.php", query: String? = "")
     
     var request: URLRequest? {
         guard let url = self.url else { return nil }
@@ -33,7 +33,7 @@ enum Endpoint {
     
     private var path: String {
         switch self {
-        case .fetchMeals(let url):
+        case .fetchMeals(let url, _):
             return url
         }
     }
@@ -41,9 +41,9 @@ enum Endpoint {
     
     private var queryItems: [URLQueryItem] {
         switch self {
-        case .fetchMeals:
+        case .fetchMeals(_, let query):
             return [
-                URLQueryItem(name: "s", value: ""),
+                URLQueryItem(name: "s", value: query),
             ]
         }
     }

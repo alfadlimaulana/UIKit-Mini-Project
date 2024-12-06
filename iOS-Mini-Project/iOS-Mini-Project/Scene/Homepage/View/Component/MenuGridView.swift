@@ -90,7 +90,6 @@ class MenuGridView: UIView, UICollectionViewDataSource, UICollectionViewDelegate
     // MARK: - Public Method
     
     func configure(meals: [Meal], didSelectItem: @escaping (IndexPath) -> Void) {
-        print(meals)
         self.meals = meals
         self.didSelectItem = didSelectItem
         collectionView.reloadData()

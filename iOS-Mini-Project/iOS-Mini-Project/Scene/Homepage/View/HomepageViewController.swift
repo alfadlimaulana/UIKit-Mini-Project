@@ -15,6 +15,8 @@ class HomepageViewController: UIViewController {
     
     let vm: HomepageViewControllerViewModel
     
+    var searchDebounceTimer: Timer?
+    
     init(vm: HomepageViewControllerViewModel = HomepageViewControllerViewModel()) {
         self.vm = vm
         super.init(nibName: nil, bundle: nil)
@@ -38,8 +40,19 @@ class HomepageViewController: UIViewController {
         
         self.vm.onMealsUpdated = { [weak self] in
             DispatchQueue.main.async {
-                self?.gridView.reloadData(meals: self?.vm.meals ?? [])
+                self?.filterView.configure(areas: Array(Set(self?.vm.meals.map(\.strArea) ?? [])))
+                self?.gridView.configure(meals: self?.vm.meals ?? []) { [weak self] indexPath in
+                    guard let self = self else { return }
+                    let meal = self.vm.meals[indexPath.row]
+                    let vm = DetailViewControllerViewModel(meal: meal)
+                    let vc = DetailViewController(vm: vm)
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
             }
+        }
+        
+        self.filterView.onCategorySelected = { [weak self] category in
+            self?.vm.fetchMeals(query: category)
         }
     }
     
@@ -85,21 +98,19 @@ class HomepageViewController: UIViewController {
             gridView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             gridView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor)
         ])
-        
-        gridView.configure(meals: vm.meals) { [weak self] indexPath in
-            
-            guard let self = self else { return }
-            let meal = self.vm.meals[indexPath.row]
-            let vm = DetailViewControllerViewModel(meal: meal)
-            let vc = DetailViewController(vm: vm)
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
     }
 }
 
 extension HomepageViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text else { return }
-        print("User is searching for: \(searchText)")
+        
+        searchDebounceTimer?.invalidate() // Membatalkan timer sebelumnya
+            
+        // Menunggu 0.5 detik setelah pengguna berhenti mengetik untuk memulai pencarian
+        searchDebounceTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
+            // Lakukan refetch data atau pencarian berdasarkan searchText
+            self.vm.fetchMeals(query: searchText)
+        }
     }
 }
