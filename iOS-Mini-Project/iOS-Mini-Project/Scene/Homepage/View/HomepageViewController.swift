@@ -40,8 +40,8 @@ class HomepageViewController: UIViewController {
         
         self.vm.onMealsUpdated = { [weak self] in
             DispatchQueue.main.async {
-                self?.filterView.configure(areas: Array(Set(self?.vm.meals.map(\.strArea) ?? [])))
-                self?.gridView.configure(meals: self?.vm.meals ?? []) { [weak self] indexPath in
+                self?.filterView.configure(areas: self?.vm.areas ?? [], appliedFilters: self?.vm.filters ?? [])
+                self?.gridView.configure(meals: self?.vm.filteredMeals ?? []) { [weak self] indexPath in
                     guard let self = self else { return }
                     let meal = self.vm.meals[indexPath.row]
                     let vm = DetailViewControllerViewModel(meal: meal)
@@ -52,7 +52,18 @@ class HomepageViewController: UIViewController {
         }
         
         self.filterView.onCategorySelected = { [weak self] category in
-            self?.vm.fetchMeals(query: category)
+            var filters = self?.vm.filters ?? []
+
+            if let index = filters.firstIndex(of: category) {
+                // Jika kategori sudah ada, hapus kategori dari array filters
+                filters.remove(at: index)
+            } else {
+                // Jika kategori belum ada, tambahkan kategori ke array filters
+                filters.append(category)
+            }
+
+            // Update filters di ViewModel
+            self?.vm.updateFilters(newFilters: filters)
         }
     }
     

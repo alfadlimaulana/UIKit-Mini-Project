@@ -9,6 +9,7 @@ import UIKit
 
 class FilterView: UIScrollView {
     var areas: [String] = []
+    var appliedFilters: [String] = []
     var onCategorySelected: ((String) -> Void)?
     
     let categoriesStack = {
@@ -45,18 +46,34 @@ class FilterView: UIScrollView {
         ])
     }
     
-    func configure(areas: [String]) {
-        self.areas = areas
+    func configure(areas: [String], appliedFilters: [String]) {
+        self.appliedFilters = appliedFilters
+        
+        let appliedAreas = areas.filter { appliedFilters.contains($0) }
+        let remainingAreas = areas.filter { !appliedFilters.contains($0) }
+
+        // Gabungkan appliedAreas di depan dan remainingAreas disortir
+        let sortedAreas = appliedAreas + remainingAreas.sorted()
+        
+        self.areas = sortedAreas
+        
+        categoriesStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
         for text in self.areas {
             let button = UIButton(type: .custom)
             var config = UIButton.Configuration.filled()
             config.title = text
             config.contentInsets = NSDirectionalEdgeInsets(top: 6, leading: 12, bottom: 6, trailing: 12)
-            config.baseBackgroundColor = .systemBlue
-            config.baseForegroundColor = .white
-            config.cornerStyle = .capsule
             
+            if appliedFilters.contains(text) {
+                config.baseBackgroundColor = .systemBlue
+                config.baseForegroundColor = .white
+            } else {
+                config.baseBackgroundColor = .gray
+                config.baseForegroundColor = .black
+            }
+            
+            config.cornerStyle = .capsule
             let attributedTitle = AttributedString(
                 text,
                 attributes: AttributeContainer([
@@ -65,10 +82,8 @@ class FilterView: UIScrollView {
                 ])
             )
             config.attributedTitle = attributedTitle
-            
             button.configuration = config
             
-            // Add the label to the stack view
             categoriesStack.addArrangedSubview(button)
             
             button.addTarget(self, action: #selector(badgeTapped(_:)), for: .touchUpInside)

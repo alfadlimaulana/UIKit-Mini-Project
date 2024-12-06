@@ -11,7 +11,15 @@ class HomepageViewControllerViewModel {
     var onMealsUpdated: (()->Void)?
     var onErrorMessage: ((MealServiceError)->Void)?
     
-    private(set) var meals: [Meal] = [] {
+    private(set) var meals: [Meal] = []
+    
+    var filters: [String] = []
+    
+    var areas: [String] {
+        Array(Set(self.meals.map(\.strArea)))
+    }
+    
+    var filteredMeals: [Meal] = [] {
         didSet {
             self.onMealsUpdated?()
         }
@@ -27,12 +35,29 @@ class HomepageViewControllerViewModel {
             switch result {
             case .success(let meals):
                 self?.meals = meals
+                self?.updateFilteredMeals()
                 print("DEBUG PRINT:", "\(meals.count) coins fetched.")
                 
             case .failure(let error):
                 self?.onErrorMessage?(error)
             }
         }
-        
+    }
+    
+    func updateFilteredMeals() {
+        if filters.isEmpty {
+            filteredMeals = meals  // Jika filters kosong, tampilkan semua meals
+        } else {
+            filteredMeals = meals.filter { meal in
+                filters.contains { filter in
+                    meal.strArea.lowercased().contains(filter.lowercased())
+                }
+            }
+        }
+    }
+    
+    func updateFilters(newFilters: [String]) {
+        filters = newFilters
+        updateFilteredMeals()
     }
 }
