@@ -29,6 +29,8 @@ class HomepageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        vm.fetchMeals()
+        
         view.backgroundColor = .secondarySystemBackground
         
         title = "Choose Your Menu"

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme
+   LastUpgradeVersion = "1600"
+   version = "1.7">
+   <BuildAction
+      parallelizeBuildables = "YES"
+      buildImplicitDependencies = "YES"
+      buildArchitectures = "Automatic">
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "CDB1D05C2CFEAB9100A46EC4"
+               BuildableName = "iOS-Mini-Project.app"
+               BlueprintName = "iOS-Mini-Project"
+               ReferencedContainer = "container:iOS-Mini-Project.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
+   </BuildAction>
+   <TestAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      shouldAutocreateTestPlan = "YES">
+      <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "CDB1D0722CFEAB9200A46EC4"
+               BuildableName = "iOS-Mini-ProjectTests.xctest"
+               BlueprintName = "iOS-Mini-ProjectTests"
+               ReferencedContainer = "container:iOS-Mini-Project.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "CDB1D07C2CFEAB9200A46EC4"
+               BuildableName = "iOS-Mini-ProjectUITests.xctest"
+               BlueprintName = "iOS-Mini-ProjectUITests"
+               ReferencedContainer = "container:iOS-Mini-Project.xcodeproj">
+            </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "iOS_Mini_ProjectUITests">
+               </Test>
+               <Test
+                  Identifier = "iOS_Mini_ProjectUITests/testExample()">
+               </Test>
+               <Test
+                  Identifier = "iOS_Mini_ProjectUITests/testLaunchPerformance()">
+               </Test>
+               <Test
+                  Identifier = "iOS_Mini_ProjectUITestsLaunchTests">
+               </Test>
+               <Test
+                  Identifier = "iOS_Mini_ProjectUITestsLaunchTests/testLaunch()">
+               </Test>
+            </SkippedTests>
+         </TestableReference>
+      </Testables>
+   </TestAction>
+   <LaunchAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      launchStyle = "0"
+      useCustomWorkingDirectory = "NO"
+      ignoresPersistentStateOnLaunch = "NO"
+      debugDocumentVersioning = "YES"
+      debugServiceExtension = "internal"
+      allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "CDB1D05C2CFEAB9100A46EC4"
+            BuildableName = "iOS-Mini-Project.app"
+            BlueprintName = "iOS-Mini-Project"
+            ReferencedContainer = "container:iOS-Mini-Project.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+   </LaunchAction>
+   <ProfileAction
+      buildConfiguration = "Release"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      savedToolIdentifier = ""
+      useCustomWorkingDirectory = "NO"
+      debugDocumentVersioning = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "CDB1D05C2CFEAB9100A46EC4"
+            BuildableName = "iOS-Mini-Project.app"
+            BlueprintName = "iOS-Mini-Project"
+            ReferencedContainer = "container:iOS-Mini-Project.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+   </ProfileAction>
+   <AnalyzeAction
+      buildConfiguration = "Debug">
+   </AnalyzeAction>
+   <ArchiveAction
+      buildConfiguration = "Release"
+      revealArchiveInOrganizer = "YES">
+   </ArchiveAction>
+</Scheme>

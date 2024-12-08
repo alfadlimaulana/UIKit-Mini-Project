@@ -7,15 +7,8 @@
 
 import Foundation
 
-enum MealServiceError: Error {
-    case serverError(String = "Server error occurred.")
-    case unknown(String = "An unknown error occurred.")
-    case decodingError(String = "Error parsing server response.")
-}
-
-class MealService {
-    
-    static func fetchMeals(with endpoint: Endpoint, completion: @escaping (Result<[Meal], MealServiceError>)->Void) {
+class MealService: MealServiceProtocol {
+    func fetchMeals(with endpoint: Endpoint, completion: @escaping (Result<[Meal], MealServiceError>) -> Void) {
         guard let request = endpoint.request else { return }
         
         
@@ -46,5 +39,4 @@ class MealService {
             
         }.resume()
     }
-    
 }

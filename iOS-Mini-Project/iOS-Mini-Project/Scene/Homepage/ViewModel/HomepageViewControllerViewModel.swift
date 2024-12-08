@@ -8,6 +8,7 @@
 import Foundation
 
 class HomepageViewControllerViewModel {
+    private let mealService: MealServiceProtocol
     var onMealsUpdated: (()->Void)?
     var onErrorMessage: ((MealServiceError)->Void)?
     
@@ -25,13 +26,13 @@ class HomepageViewControllerViewModel {
         }
     }
     
-    init() {
-        self.fetchMeals()
+    init(mealService: MealServiceProtocol = MealService()) {
+        self.mealService = mealService
     }
     
     public func fetchMeals(query: String? = "") {
         let endpoint = Endpoint.fetchMeals(query: query)
-        MealService.fetchMeals(with: endpoint) { [weak self] result in
+        mealService.fetchMeals(with: endpoint) { [weak self] result in
             switch result {
             case .success(let meals):
                 self?.meals = meals
